@@ -2,9 +2,9 @@ package observer;
 
 import java.util.ArrayList;
 
-public class GroupAdmin implements  Sender{
-    ArrayList<Member> members = new ArrayList<>();
-    UndoableStringBuilder usb;
+public class GroupAdmin implements Sender{
+    private ArrayList<ConcreteMember> members;
+    private UndoableStringBuilder usb;
 
     public GroupAdmin(){
         members = new ArrayList<>();
@@ -13,12 +13,16 @@ public class GroupAdmin implements  Sender{
 
     @Override
     public void register(Member obj) {
-        if(!(members.contains(obj))) members.add(obj);
+        if(!(members.contains((ConcreteMember) obj))){
+            members.add((ConcreteMember) obj);
+            ((ConcreteMember) obj).setGroupAdmin(this);
+        }
     }
 
     @Override
     public void unregister(Member obj) {
-        members.remove(obj);
+        members.remove((ConcreteMember) obj);
+        ((ConcreteMember) obj).setGroupAdmin(null);
     }
 
     @Override
@@ -46,9 +50,13 @@ public class GroupAdmin implements  Sender{
     }
 
     public void notify_members(UndoableStringBuilder change){
-        for(int i = 0; i < members.size(); i++){
-            members.get(i).update(change);
+        for (Member member : members) {
+            member.update(change);
         }
+    }
+
+    public ArrayList<ConcreteMember> getMemberList(){
+        return this.members;
     }
 
     public UndoableStringBuilder getCurrentString(){
