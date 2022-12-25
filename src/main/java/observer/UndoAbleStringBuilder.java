@@ -40,7 +40,7 @@ public class UndoAbleStringBuilder extends UndoableStringBuilder {
         }
         catch (StringIndexOutOfBoundsException e){
             e.printStackTrace();
-            throw new StringIndexOutOfBoundsException();
+            return this;
         }
     }
 
@@ -79,11 +79,11 @@ public class UndoAbleStringBuilder extends UndoableStringBuilder {
         }
         catch (StringIndexOutOfBoundsException e){
             e.printStackTrace();
-            throw new StringIndexOutOfBoundsException();
+            return this;
         }
         catch (NullPointerException e){
             e.printStackTrace();
-            throw new NullPointerException();
+            return this;
         }
     }
 
