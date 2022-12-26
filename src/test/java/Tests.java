@@ -1,3 +1,5 @@
+import observer.ConcreteMember;
+import observer.GroupAdmin;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
@@ -7,15 +9,33 @@ public class Tests {
     // stub method to check external dependencies compatibility
     @Test
     public void test(){
-        String s1 = "Alice";
-        String s2 = "Bob";
+        GroupAdmin usbObservable = new GroupAdmin();
+        usbObservable.append("hello");
+        ConcreteMember member1 = new ConcreteMember("Eli", usbObservable);
+        ConcreteMember member2 = new ConcreteMember("Shahar", usbObservable);
 
-        logger.info(()->JvmUtilities.objectFootprint(s1));
+        System.out.println("member1 foot print: ");
+        logger.info(()->JvmUtilities.objectFootprint(member1));
+        //logger.info(()->JvmUtilities.objectTotalSize(member1));
+        System.out.println();
 
-        logger.info(()->JvmUtilities.objectFootprint(s1,s2));
+        System.out.println("member2 foot print: ");
+        logger.info(()->JvmUtilities.objectFootprint(member2));
+        //logger.info(()->JvmUtilities.objectTotalSize(member2));
+        System.out.println();
 
-        logger.info(()->JvmUtilities.objectTotalSize(s1));
+        usbObservable.append("hello");
 
-        logger.info(() -> JvmUtilities.jvmInfo());
+        System.out.println("member1 foot print after append(): ");
+        logger.info(()->JvmUtilities.objectFootprint(member1));
+        //logger.info(()->JvmUtilities.objectTotalSize(member1));
+        System.out.println();
+
+        System.out.println("member2 foot print after append(): ");
+        logger.info(()->JvmUtilities.objectFootprint(member2));
+        //logger.info(()->JvmUtilities.objectTotalSize(member2));
+        System.out.println();
+
+        //logger.info(() -> JvmUtilities.jvmInfo());
     }
 }
