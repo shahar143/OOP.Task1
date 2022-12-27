@@ -14,13 +14,14 @@ public class Tests {
     public static final Logger logger = LoggerFactory.getLogger(Tests.class);
     GroupAdmin groupAdmin; //ConcreteMember testing groupAdmin instance.
     ConcreteMember concreteMember; //ConcreteMember testing instance.
-    GroupAdmin usbObservable = new GroupAdmin(); //GroupAdmin testing instance.
+    GroupAdmin usbObservable; //GroupAdmin testing instance.
 
     @BeforeEach
     void setUp(){
         groupAdmin = new GroupAdmin();
         concreteMember = new ConcreteMember("Ely");
 
+        usbObservable = new GroupAdmin();
         usbObservable.append("testing");
         usbObservable.notify_members();
 
@@ -230,15 +231,15 @@ public class Tests {
     }
 
     @Test
-    void getLocalUSB() {
+    void testGetLocalUSB() {
         //Test if the function returns the instance of it.
-        Assertions.assertInstanceOf(UndoAbleStringBuilder.class, groupAdmin.getCurrentUSB());
+        Assertions.assertInstanceOf(UndoableStringBuilder.class, groupAdmin.getCurrentUSB());
     }
 
     @Test
     void updateInsert() {
         //Test update function on a single member.
-        UndoAbleStringBuilder undoAbleStringBuilder = new UndoAbleStringBuilder();
+        UndoableStringBuilder undoAbleStringBuilder = new UndoableStringBuilder();
         undoAbleStringBuilder.insert(0, "Hello");
         undoAbleStringBuilder.insert(5, " world");
 
@@ -251,7 +252,7 @@ public class Tests {
     @Test
     void updateAppend(){
         //Test append function on a single member.
-        UndoAbleStringBuilder undoAbleStringBuilder = new UndoAbleStringBuilder();
+        UndoableStringBuilder undoAbleStringBuilder = new UndoableStringBuilder();
         undoAbleStringBuilder.append("Hello");
         undoAbleStringBuilder.append("world");
 
@@ -264,7 +265,7 @@ public class Tests {
     @Test
     void updateDelete(){
         //Test delete function on a single member.
-        UndoAbleStringBuilder undoAbleStringBuilder = new UndoAbleStringBuilder();
+        UndoableStringBuilder undoAbleStringBuilder = new UndoableStringBuilder();
         undoAbleStringBuilder.append("Hello");
         undoAbleStringBuilder.delete(4,5);
 
@@ -277,7 +278,7 @@ public class Tests {
     @Test
     void updateUndo(){
         //Test undo function on a single member.
-        UndoAbleStringBuilder undoAbleStringBuilder = new UndoAbleStringBuilder();
+        UndoableStringBuilder undoAbleStringBuilder = new UndoableStringBuilder();
         undoAbleStringBuilder.append("Hello");
         undoAbleStringBuilder.undo();
 
@@ -293,8 +294,6 @@ public class Tests {
     // stub method to check external dependencies compatibility
     @Test
     public void memoryTest(){
-        GroupAdmin usbObservable = new GroupAdmin();
-        usbObservable.append("hello");
         ConcreteMember member1 = new ConcreteMember("Eli", usbObservable);
         ConcreteMember member2 = new ConcreteMember("Shahar", usbObservable);
 
@@ -317,6 +316,11 @@ public class Tests {
 
         System.out.println("member2 foot print after append(): ");
         logger.info(()->JvmUtilities.objectFootprint(member2));
+        //logger.info(()->JvmUtilities.objectTotalSize(member2));
+        System.out.println();
+
+        System.out.println("groupAdmin foot print after append(): ");
+        logger.info(()->JvmUtilities.objectFootprint(usbObservable));
         //logger.info(()->JvmUtilities.objectTotalSize(member2));
         System.out.println();
 

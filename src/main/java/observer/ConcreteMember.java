@@ -6,7 +6,7 @@ package observer;
  */
 public class ConcreteMember implements Member{
     private final String name;
-    private UndoAbleStringBuilder localUSB;
+    private UndoableStringBuilder localUSB;
     private GroupAdmin groupAdmin;
 
     public ConcreteMember(String name){
@@ -57,10 +57,10 @@ public class ConcreteMember implements Member{
 
 
     /**
-     * Gets the UndoAbleStringBuilder object.
-     * @return UndoAbleStringBuilder object reference.
+     * Gets the UndoableStringBuilder object.
+     * @return UndoableStringBuilder object reference.
      */
-    public UndoAbleStringBuilder getLocalUSB(){
+    public UndoableStringBuilder getLocalUSB(){
         return this.localUSB;
     }
 
@@ -72,7 +72,7 @@ public class ConcreteMember implements Member{
      */
     @Override
     public void update(UndoableStringBuilder usb) {
-        this.localUSB = (UndoAbleStringBuilder) usb;
+        this.localUSB = (UndoableStringBuilder) usb;
         System.out.println(this.name + " has a new value -> " + this.localUSB);
     }
 

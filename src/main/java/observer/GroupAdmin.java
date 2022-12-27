@@ -7,11 +7,11 @@ import java.util.ArrayList;
  */
 public class GroupAdmin implements Sender{
     private final ArrayList<Member> members;
-    private final UndoAbleStringBuilder usb;
+    private final UndoableStringBuilder usb;
 
     public GroupAdmin(){
         this.members = new ArrayList<>();
-        usb = new UndoAbleStringBuilder();
+        usb = new UndoableStringBuilder();
     }
 
 
@@ -26,9 +26,9 @@ public class GroupAdmin implements Sender{
 
     /**
      * Gets the observables UndoableStringBuilder reference.
-     * @return UndoAbleStringBuilder reference.
+     * @return UndoableStringBuilder reference.
      */
-    public UndoAbleStringBuilder getCurrentUSB() {
+    public UndoableStringBuilder getCurrentUSB() {
         return usb;
     }
 
@@ -41,8 +41,10 @@ public class GroupAdmin implements Sender{
      */
     @Override
     public void register(Member obj) {
-        if(!members.contains(obj))
+        if(!members.contains(obj)){
             members.add(obj);
+        }
+
     }
 
 
@@ -58,7 +60,7 @@ public class GroupAdmin implements Sender{
 
 
     /**
-     * Performs string insertion on the UndoAbleStringBuilder instance, which results in changes
+     * Performs string insertion on the UndoableStringBuilder instance, which results in changes
      * in all members referencing it.
      * Afterwards, notifies all registered members on the changes performed by calling notify_members().
      * @param offset From which index insert string.
@@ -72,7 +74,7 @@ public class GroupAdmin implements Sender{
 
 
     /**
-     * Preforms String appending on the UndoAbleStringBuilder instance, which results in changes
+     * Preforms String appending on the UndoableStringBuilder instance, which results in changes
      * in all members referencing it.
      * Afterwards, notifies all registered members on the changes performed by calling notify_members().
      * @param obj String we wish to append.
@@ -85,7 +87,7 @@ public class GroupAdmin implements Sender{
 
 
     /**
-     * Preforms String deletion on the UndoAbleStringBuilder instance, which results in changes
+     * Preforms String deletion on the UndoableStringBuilder instance, which results in changes
      * in all members referencing it.
      * Afterwards, notifies all registered members on the changes performed by calling notify_members().
      * @param start Starting index of the deletion. Included.
@@ -99,7 +101,7 @@ public class GroupAdmin implements Sender{
 
 
     /**
-     * Preforms String undoing on the UndoAbleStringBuilder instance, which results in changes
+     * Preforms String undoing on the UndoableStringBuilder instance, which results in changes
      * in all members referencing it.
      * Afterwards, notifies all registered members on the changes performed by calling notify_members().
      */
@@ -112,7 +114,7 @@ public class GroupAdmin implements Sender{
 
     /**
      * Notifies all registered members in the observable instance of the changes performed
-     * on the observer's UndoAbleStringBuilder instance by calling the update method on each registered member.
+     * on the observer's UndoableStringBuilder instance by calling the update method on each registered member.
      */
     public void notify_members(){
         for(Member member: members){
