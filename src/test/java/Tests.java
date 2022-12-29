@@ -289,41 +289,109 @@ public class Tests {
     }
 
 
-
-
-    // stub method to check external dependencies compatibility
     @Test
-    public void memoryTest(){
-        ConcreteMember member1 = new ConcreteMember("Eli", usbObservable);
-        ConcreteMember member2 = new ConcreteMember("Shahar", usbObservable);
+    void memoryMemberSubscriptionTest(){
+        //Test memory change of member side subscribing to the groupAdmin.
+        ConcreteMember member1 = new ConcreteMember("Ely");
+        ConcreteMember member2 = new ConcreteMember("Shahar");
+        ConcreteMember member3 = new ConcreteMember("A very very very long name");
 
-        System.out.println("member1 foot print: ");
         logger.info(()->JvmUtilities.objectFootprint(member1));
-        //logger.info(()->JvmUtilities.objectTotalSize(member1));
-        System.out.println();
-
-        System.out.println("member2 foot print: ");
         logger.info(()->JvmUtilities.objectFootprint(member2));
-        //logger.info(()->JvmUtilities.objectTotalSize(member2));
-        System.out.println();
+        logger.info(()->JvmUtilities.objectFootprint(member3));
 
-        usbObservable.append("hello");
+        member1.subscribe(groupAdmin);
+        member2.subscribe(groupAdmin);
+        member3.subscribe(groupAdmin);
 
-        System.out.println("member1 foot print after append(): ");
         logger.info(()->JvmUtilities.objectFootprint(member1));
-        //logger.info(()->JvmUtilities.objectTotalSize(member1));
-        System.out.println();
-
-        System.out.println("member2 foot print after append(): ");
         logger.info(()->JvmUtilities.objectFootprint(member2));
-        //logger.info(()->JvmUtilities.objectTotalSize(member2));
-        System.out.println();
+        logger.info(()->JvmUtilities.objectFootprint(member3));
+    }
 
-        System.out.println("groupAdmin foot print after append(): ");
-        logger.info(()->JvmUtilities.objectFootprint(usbObservable));
-        //logger.info(()->JvmUtilities.objectTotalSize(member2));
-        System.out.println();
 
-        //logger.info(() -> JvmUtilities.jvmInfo());
+    @Test
+    void memoryRegisteringTest(){
+        //Test registration memory change
+        System.out.println("Empty groupAdmin memory size");
+        logger.info(() -> JvmUtilities.objectFootprint(groupAdmin));
+
+        groupAdmin.register(concreteMember);
+        groupAdmin.register(new ConcreteMember("Shahar"));
+
+        System.out.println("groupAdmin memory size after registering 2 members");
+        logger.info(() -> JvmUtilities.objectFootprint(groupAdmin));
+    }
+
+
+    @Test
+    void memoryUnregisterTest(){
+        //Test Unregistering memory change
+        System.out.println("Empty groupAdmin memory size");
+        logger.info(() -> JvmUtilities.objectFootprint(groupAdmin));
+
+        groupAdmin.register(concreteMember);
+        logger.info(() -> JvmUtilities.objectFootprint(groupAdmin));
+        logger.info(() -> JvmUtilities.objectFootprint(concreteMember));
+
+        groupAdmin.unregister(concreteMember);
+        logger.info(() -> JvmUtilities.objectFootprint(groupAdmin));
+        logger.info(() -> JvmUtilities.objectFootprint(concreteMember));
+
+    }
+
+
+
+    @Test
+    void memoryAppendTest(){
+        //Test append memory change on both subject and observer.
+        concreteMember.subscribe(groupAdmin);
+        logger.info(() -> JvmUtilities.objectFootprint(groupAdmin));
+
+        groupAdmin.append("A very long string to append");
+        logger.info(() -> JvmUtilities.objectFootprint(groupAdmin));
+        logger.info(() -> JvmUtilities.objectFootprint(concreteMember));
+
+    }
+
+    @Test
+    void memoryInsertTest(){
+        //Test insert memory change on both subject and observer.
+        concreteMember.subscribe(groupAdmin);
+        logger.info(() -> JvmUtilities.objectFootprint(groupAdmin));
+
+        groupAdmin.insert(0, "A very very very very long string to insert");
+        logger.info(() -> JvmUtilities.objectFootprint(groupAdmin));
+        logger.info(() -> JvmUtilities.objectFootprint(concreteMember));
+    }
+
+    @Test
+    void memoryDeleteTest(){
+        //Test delete memory change on both subject and observer.
+        concreteMember.subscribe(groupAdmin);
+        logger.info(() -> JvmUtilities.objectFootprint(groupAdmin));
+
+        groupAdmin.append("A very very very very long string to append");
+        logger.info(() -> JvmUtilities.objectFootprint(groupAdmin));
+
+        groupAdmin.delete(0, 10);
+        logger.info(() -> JvmUtilities.objectFootprint(groupAdmin));
+        logger.info(() -> JvmUtilities.objectFootprint(concreteMember));
+    }
+
+
+    @Test
+    void memoryUndoTest(){
+        //Test undo memory change on both subject and observer.
+        concreteMember.subscribe(groupAdmin);
+        logger.info(() -> JvmUtilities.objectFootprint(groupAdmin));
+
+        groupAdmin.append("A very very very very long string to append");
+        logger.info(() -> JvmUtilities.objectFootprint(groupAdmin));
+
+        groupAdmin.undo();
+
+        logger.info(() -> JvmUtilities.objectFootprint(groupAdmin));
+        logger.info(() -> JvmUtilities.objectFootprint(concreteMember));
     }
 }
